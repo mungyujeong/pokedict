@@ -10,14 +10,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int startTime = 1500;
+  static const twentyFiveMinutes = 1500;
+  int startTime = twentyFiveMinutes;
   late Timer timer;
   bool isRunning = true;
+  int countPomodoros = 0;
 
   void onTick(Timer timer) {
-    setState(() {
-      startTime--;
-    });
+    if (startTime == 0) {
+      setState(() {
+        startTime = twentyFiveMinutes;
+        isRunning = false;
+        countPomodoros++;
+      });
+    } else {
+      setState(() {
+        startTime--;
+      });
+    }
   }
 
   void onStartTimer() {
@@ -37,6 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  String format(int seconds) {
+    Duration duration = Duration(seconds: seconds);
+    return duration.toString().split(".").first.substring(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Text(
-                '$startTime',
+                format(startTime),
                 style: TextStyle(
                   color: Theme.of(context).cardColor,
                   fontSize: 58,
@@ -75,32 +90,29 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Expanded(
                   child: Container(
-                      color: Theme.of(context).cardColor,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Pomodoros',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .headline1!
-                                    .color,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          Text(
-                            '0',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .headline1!
-                                    .color,
-                                fontSize: 50,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      )),
+                    color: Theme.of(context).cardColor,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Pomodoros',
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.headline1!.color,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Text(
+                          '$countPomodoros',
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.headline1!.color,
+                              fontSize: 50,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
