@@ -31,7 +31,7 @@ class WebScreen extends StatelessWidget {
           if (snapshot.hasData) {
             return Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 Expanded(child: makeList(snapshot))
@@ -52,10 +52,37 @@ class WebScreen extends StatelessWidget {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       itemCount: snapshot.data!.length,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       itemBuilder: (context, index) {
-        print(index);
         final webtoon = snapshot.data![index];
-        return Text(webtoon.title);
+        return Column(
+          children: [
+            Container(
+              width: 250,
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 15,
+                      offset: const Offset(10, 10),
+                      color: Colors.black.withOpacity(.5),
+                    )
+                  ]),
+              child: Image.network(webtoon.thumb),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              webtoon.title,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        );
       },
       separatorBuilder: (context, index) {
         return const SizedBox(
