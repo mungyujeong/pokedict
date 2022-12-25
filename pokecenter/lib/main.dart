@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokecenter/widgets/main_appbar.dart';
+import 'package:pokecenter/widgets/pokemon_card.dart';
 
 void main(List<String> args) {
   runApp(const App());
@@ -18,6 +20,7 @@ class _AppState extends State<App> {
     return MaterialApp(
       home: Scaffold(
         appBar: mainAppBar(),
+        body: const PokemonCard(),
       ),
     );
   }
