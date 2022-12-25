@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokecenter/widgets/main_appbar.dart';
 import 'package:pokecenter/widgets/pokemon_card.dart';
