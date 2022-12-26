@@ -18,9 +18,15 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: mainAppBar(),
-        body: const PokemonCard(),
-      ),
+          appBar: mainAppBar(),
+          body: SingleChildScrollView(
+            child: Column(
+              children: const [
+                PokemonCard(),
+                PokemonCard(),
+              ],
+            ),
+          )),
     );
   }
 }
