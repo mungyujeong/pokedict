@@ -47,21 +47,30 @@ PreferredSizeWidget mainAppBar() {
           children: [
             IntrinsicHeight(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FilterButton(name: btnNames[0]),
+                  FilterButton(
+                    name: btnNames[0],
+                    flex: 2,
+                  ),
                   VerticalDivider(
                     thickness: 1,
-                    width: .5,
+                    width: 10,
                     color: Colors.grey.withOpacity(.3),
                   ),
-                  FilterButton(name: btnNames[1]),
+                  FilterButton(
+                    name: btnNames[1],
+                    flex: 1,
+                  ),
                   VerticalDivider(
                     thickness: 1,
-                    width: .5,
+                    width: 10,
                     color: Colors.grey.withOpacity(.3),
                   ),
-                  FilterButton(name: btnNames[2]),
+                  FilterButton(
+                    name: btnNames[2],
+                    flex: 1,
+                  ),
                 ],
               ),
             ),
@@ -77,27 +86,34 @@ PreferredSizeWidget mainAppBar() {
 
 class FilterButton extends StatelessWidget {
   late String name;
+  late int flex;
 
   FilterButton({
     Key? key,
     required this.name,
+    required this.flex,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(.7),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          name,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            color: Colors.black.withOpacity(.5),
+    return Expanded(
+      flex: flex,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(.7),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Text(
+              name,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.black.withOpacity(.5),
+              ),
+            ),
           ),
         ),
       ),
