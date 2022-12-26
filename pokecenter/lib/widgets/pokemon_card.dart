@@ -57,44 +57,16 @@ class PokemonCard extends StatelessWidget {
                     ],
                   ),
                   Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 8,
-                          ),
-                          child: Text(
-                            'FIGHTING',
-                          ),
-                        ),
+                    children: const [
+                      TypeContainer(
+                        typeName: 'FIGHTING',
                       ),
-                      const SizedBox(
-                        width: 20,
+                      SizedBox(
+                        width: 50,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 8,
-                          ),
-                          child: Text(
-                            'GHOST',
-                          ),
-                        ),
-                      )
+                      TypeContainer(
+                        typeName: 'GHOST',
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -104,6 +76,35 @@ class PokemonCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class TypeContainer extends StatelessWidget {
+  final String typeName;
+  const TypeContainer({
+    Key? key,
+    required this.typeName,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.black,
+        ),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 30,
+          vertical: 8,
+        ),
+        child: Text(
+          typeName,
         ),
       ),
     );
