@@ -7,94 +7,34 @@ class PokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 15,
-        left: 15,
-        right: 15,
-      ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(30),
       child: Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-          color: Colors.yellow,
-          borderRadius: BorderRadius.circular(12),
+        decoration: const BoxDecoration(
+          color: Colors.red,
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 15,
-            bottom: 10,
-            left: 10,
-            right: 10,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        "#1010",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      const Text(
-                        "PokemonName",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.star_border_outlined,
-                        ),
-                      ),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.circle_outlined,
-                        ),
-                      ),
-                    ],
+        child: Stack(
+          children: [
+            Align(
+              alignment: const Alignment(1.2, 0),
+              child: Transform.translate(
+                offset: const Offset(-20, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.4),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(100),
+                      bottomLeft: Radius.circular(100),
+                    ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: const [
-                      TypeContainer(
-                        typeName: 'FIGHTING',
-                      ),
-                      TypeContainer(
-                        typeName: 'GHOST',
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-                child: Transform.translate(
-                  offset: const Offset(10, 0),
                   child: const Icon(
                     Icons.catching_pokemon_outlined,
-                    size: 80,
+                    size: 100,
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );

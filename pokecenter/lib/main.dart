@@ -20,9 +20,9 @@ class _AppState extends State<App> {
       home: Scaffold(
           appBar: mainAppBar(),
           body: SingleChildScrollView(
+            padding: const EdgeInsets.all(5),
             child: Column(
               children: const [
-                PokemonCard(),
                 PokemonCard(),
               ],
             ),
