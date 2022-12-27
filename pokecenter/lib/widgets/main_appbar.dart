@@ -38,7 +38,7 @@ PreferredSizeWidget mainAppBar() {
       )
     ],
     bottom: PreferredSize(
-      preferredSize: const Size.fromHeight(60),
+      preferredSize: const Size.fromHeight(50),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
