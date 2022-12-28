@@ -27,70 +27,15 @@ class PokemonCard extends StatelessWidget {
                     child: Column(
                       children: [
                         Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  left: 15,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "#1010",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.black.withOpacity(0.8),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "Annihilape",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black.withOpacity(0.8),
-                                        ),
-                                        overflow: TextOverflow.visible,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                          children: const [
+                            PokeInfo(
+                              id: 120,
+                              name: "Gigantamax Charizard",
                             ),
-                            Container(
-                              padding: const EdgeInsets.only(
-                                right: 15,
-                              ),
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.star_border_outlined,
-                                    ),
-                                    iconSize: 30,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  IconButton(
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.circle_outlined,
-                                    ),
-                                    iconSize: 30,
-                                  ),
-                                ],
-                              ),
+                            SizedBox(
+                              width: 20,
                             ),
+                            PokeButton(),
                           ],
                         ),
                         const SizedBox(
@@ -127,37 +72,135 @@ class PokemonCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Stack(
-                  children: [
-                    Container(
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.4),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(100),
-                          bottomLeft: Radius.circular(100),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Transform.translate(
-                            offset: const Offset(20, 0),
-                            child: const Icon(
-                              Icons.catching_pokemon_outlined,
-                              size: 80,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 30,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                const PokemonImageStack(),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class PokemonImageStack extends StatelessWidget {
+  const PokemonImageStack({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          height: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.4),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(100),
+              bottomLeft: Radius.circular(100),
+            ),
+          ),
+          child: Row(
+            children: [
+              Transform.translate(
+                offset: const Offset(20, 0),
+                child: const Icon(
+                  Icons.catching_pokemon_outlined,
+                  size: 80,
+                ),
+              ),
+              const SizedBox(
+                width: 30,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class PokeButton extends StatelessWidget {
+  const PokeButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(
+        right: 15,
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            onPressed: () {},
+            icon: const Icon(
+              Icons.star_border_outlined,
+            ),
+            iconSize: 30,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            onPressed: () {},
+            icon: const Icon(
+              Icons.circle_outlined,
+            ),
+            iconSize: 30,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PokeInfo extends StatelessWidget {
+  final int id;
+  final String name;
+  const PokeInfo({
+    Key? key,
+    required this.id,
+    required this.name,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.only(
+          left: 15,
+        ),
+        child: Row(
+          children: [
+            Text(
+              id.toString().padLeft(3, '0'),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w300,
+                color: Colors.black.withOpacity(0.8),
+              ),
+            ),
+            const SizedBox(
+              width: 15,
+            ),
+            Expanded(
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black.withOpacity(0.8),
+                ),
+                overflow: TextOverflow.visible,
+              ),
+            ),
+          ],
         ),
       ),
     );
