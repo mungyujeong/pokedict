@@ -2,15 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:pokeapi/model/pokemon/pokemon.dart';
 import 'package:pokeapi/pokeapi.dart';
 
-class PokemonCard extends StatelessWidget {
+class PokemonCard extends StatefulWidget {
   const PokemonCard({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<PokemonCard> createState() => _PokemonCardState();
+}
+
+class _PokemonCardState extends State<PokemonCard> {
+  late Future<Pokemon?> pokemon;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    pokemon = PokeAPI.getObject<Pokemon>(1);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: PokeAPI.getObjectList<Pokemon>(1, 1),
+      future: pokemon,
       builder: ((context, snapshot) {
         if (snapshot.hasData) {
           return Padding(
@@ -33,15 +47,15 @@ class PokemonCard extends StatelessWidget {
                           child: Column(
                             children: [
                               Row(
-                                children: const [
+                                children: [
                                   PokeInfo(
-                                    id: 1,
-                                    name: "Gigantamax Charizard",
+                                    id: snapshot.data!.id,
+                                    name: snapshot.data!.name,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 20,
                                   ),
-                                  PokeButton(),
+                                  const PokeButton(),
                                 ],
                               ),
                               const SizedBox(
@@ -57,16 +71,17 @@ class PokemonCard extends StatelessWidget {
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
-                                    children: const [
+                                    children: [
                                       TypeContainer(
-                                        typeName: 'ELECTTRIC',
+                                        typeName:
+                                            snapshot.data!.types.toString(),
                                         typeColor: Colors.yellow,
                                         typeIcon: Icons.electric_bolt,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
-                                      TypeContainer(
+                                      const TypeContainer(
                                         typeName: 'GHOST',
                                         typeColor: Colors.deepPurple,
                                         typeIcon: Icons.cut_outlined,
@@ -173,8 +188,8 @@ class PokeButton extends StatelessWidget {
 }
 
 class PokeInfo extends StatelessWidget {
-  final int id;
-  final String name;
+  final int? id;
+  final String? name;
   const PokeInfo({
     Key? key,
     required this.id,
@@ -203,7 +218,7 @@ class PokeInfo extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                name,
+                name!,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
@@ -220,7 +235,7 @@ class PokeInfo extends StatelessWidget {
 }
 
 class TypeContainer extends StatelessWidget {
-  final String typeName;
+  final String? typeName;
   final IconData typeIcon;
   final Color typeColor;
   const TypeContainer({
@@ -257,7 +272,7 @@ class TypeContainer extends StatelessWidget {
             ),
             Flexible(
               child: Text(
-                typeName,
+                typeName!,
               ),
             ),
           ],
