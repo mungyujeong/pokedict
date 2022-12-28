@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pokeapi/model/pokemon/pokemon.dart';
+import 'package:pokeapi/pokeapi.dart';
 
 class PokemonCard extends StatelessWidget {
   const PokemonCard({
@@ -7,77 +9,87 @@ class PokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: IntrinsicHeight(
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.red,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                      top: 15,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: const [
-                            PokeInfo(
-                              id: 120,
-                              name: "Gigantamax Charizard",
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            PokeButton(),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Container(
+    return FutureBuilder(
+      future: PokeAPI.getObjectList<Pokemon>(1, 1),
+      builder: ((context, snapshot) {
+        if (snapshot.hasData) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: IntrinsicHeight(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Container(
                           padding: const EdgeInsets.only(
-                            left: 10,
-                            right: 10,
-                            bottom: 10,
+                            top: 15,
                           ),
-                          child: IntrinsicHeight(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: const [
-                                TypeContainer(
-                                  typeName: 'ELECTTRIC',
-                                  typeColor: Colors.yellow,
-                                  typeIcon: Icons.electric_bolt,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: const [
+                                  PokeInfo(
+                                    id: 1,
+                                    name: "Gigantamax Charizard",
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  PokeButton(),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  left: 10,
+                                  right: 10,
+                                  bottom: 10,
                                 ),
-                                SizedBox(
-                                  width: 10,
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: const [
+                                      TypeContainer(
+                                        typeName: 'ELECTTRIC',
+                                        typeColor: Colors.yellow,
+                                        typeIcon: Icons.electric_bolt,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      TypeContainer(
+                                        typeName: 'GHOST',
+                                        typeColor: Colors.deepPurple,
+                                        typeIcon: Icons.cut_outlined,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                TypeContainer(
-                                  typeName: 'GHOST',
-                                  typeColor: Colors.deepPurple,
-                                  typeIcon: Icons.cut_outlined,
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      const PokemonImageStack(),
+                    ],
                   ),
                 ),
-                const PokemonImageStack(),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+        } else {
+          return const Text("failed");
+        }
+      }),
     );
   }
 }
@@ -179,7 +191,7 @@ class PokeInfo extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              id.toString().padLeft(3, '0'),
+              "#${id.toString().padLeft(4, '0')}",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w300,
