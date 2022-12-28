@@ -1,39 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:pokecenter/widgets/main_appbar.dart';
-import 'package:pokecenter/widgets/pokemon_card.dart';
+import 'package:pokecenter/screens/dict_screen.dart';
 
 void main(List<String> args) {
   runApp(const App());
 }
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({super.key});
 
   @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-          appBar: mainAppBar(),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: const [
-                PokemonCard(),
-                PokemonCard(),
-                PokemonCard(),
-                PokemonCard(),
-                PokemonCard(),
-                PokemonCard(),
-                PokemonCard(),
-                PokemonCard(),
-              ],
-            ),
-          )),
+      home: DictScreen(),
     );
   }
 }

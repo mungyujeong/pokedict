@@ -1,110 +1,89 @@
 import 'package:flutter/material.dart';
-import 'package:pokeapi/model/pokemon/pokemon.dart';
-import 'package:pokeapi/pokeapi.dart';
 
-class PokemonCard extends StatefulWidget {
+class PokemonCard extends StatelessWidget {
+  final int? id;
+  final String? name;
+  final String? typeName;
+  final Color? typeColor;
+
   const PokemonCard({
     Key? key,
+    required this.id,
+    required this.name,
+    required this.typeName,
+    required this.typeColor,
   }) : super(key: key);
 
   @override
-  State<PokemonCard> createState() => _PokemonCardState();
-}
-
-class _PokemonCardState extends State<PokemonCard> {
-  late Future<Pokemon?> pokemon;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    pokemon = PokeAPI.getObject<Pokemon>(1);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: pokemon,
-      builder: ((context, snapshot) {
-        if (snapshot.hasData) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: IntrinsicHeight(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(15),
+      child: IntrinsicHeight(
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.red,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
+                  padding: const EdgeInsets.only(
+                    top: 15,
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                            top: 15,
+                      Row(
+                        children: [
+                          PokeInfo(
+                            id: id,
+                            name: name,
                           ),
-                          child: Column(
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          const PokeButton(),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                          right: 10,
+                          bottom: 10,
+                        ),
+                        child: IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Row(
-                                children: [
-                                  PokeInfo(
-                                    id: snapshot.data!.id,
-                                    name: snapshot.data!.name,
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  const PokeButton(),
-                                ],
+                              TypeContainer(
+                                typeName: typeName!.toUpperCase(),
+                                typeColor: typeColor,
+                                typeIcon: Icons.electric_bolt,
                               ),
                               const SizedBox(
-                                height: 15,
+                                width: 10,
                               ),
-                              Container(
-                                padding: const EdgeInsets.only(
-                                  left: 10,
-                                  right: 10,
-                                  bottom: 10,
-                                ),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      TypeContainer(
-                                        typeName:
-                                            snapshot.data!.types.toString(),
-                                        typeColor: Colors.yellow,
-                                        typeIcon: Icons.electric_bolt,
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      const TypeContainer(
-                                        typeName: 'GHOST',
-                                        typeColor: Colors.deepPurple,
-                                        typeIcon: Icons.cut_outlined,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                              const TypeContainer(
+                                typeName: 'GHOST',
+                                typeColor: Colors.deepPurple,
+                                typeIcon: Icons.cut_outlined,
                               ),
                             ],
                           ),
                         ),
                       ),
-                      const PokemonImageStack(),
                     ],
                   ),
                 ),
               ),
-            ),
-          );
-        } else {
-          return const Text("failed");
-        }
-      }),
+              const PokemonImageStack(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -236,8 +215,8 @@ class PokeInfo extends StatelessWidget {
 
 class TypeContainer extends StatelessWidget {
   final String? typeName;
-  final IconData typeIcon;
-  final Color typeColor;
+  final IconData? typeIcon;
+  final Color? typeColor;
   const TypeContainer({
     Key? key,
     required this.typeName,
@@ -255,9 +234,9 @@ class TypeContainer extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: typeColor,
+            color: typeColor!,
           ),
-          color: typeColor.withOpacity(0.5),
+          color: typeColor!.withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
