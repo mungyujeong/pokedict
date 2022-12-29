@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:pokeapi/model/pokemon/pokemon-specie.dart';
 import 'package:pokeapi/model/pokemon/pokemon.dart';
 import 'package:pokeapi/pokeapi.dart';
 import 'package:pokecenter/widgets/main_appbar.dart';
 import 'package:pokecenter/widgets/pokemon_card.dart';
 
 class DictScreen extends StatelessWidget {
-  final Future<List<Pokemon?>> pokemon = PokeAPI.getObjectList<Pokemon>(1, 40);
+  final Future<List<PokemonSpecie?>> pokemonSpecie =
+      PokeAPI.getObjectList<PokemonSpecie>(1, 100);
+  final Future<List<Pokemon?>> pokemon = PokeAPI.getObjectList<Pokemon>(1, 100);
 
   DictScreen({super.key});
 
@@ -14,23 +17,26 @@ class DictScreen extends StatelessWidget {
     return Scaffold(
       appBar: mainAppBar(),
       body: FutureBuilder(
-        future: pokemon,
-        builder: (context, AsyncSnapshot snapshot) {
+        future: Future.wait([
+          pokemonSpecie,
+          pokemon,
+        ]),
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return const Text("Error Occured");
-            }
             return ListView.separated(
               padding: const EdgeInsets.all(10),
               scrollDirection: Axis.vertical,
-              itemCount: snapshot.data!.length,
+              itemCount: snapshot.data![0].length,
               itemBuilder: (context, index) {
-                final pokemon = snapshot.data![index];
+                final pokemonSpecie = snapshot.data![0][index];
+                final pokemon = snapshot.data![1][index];
                 return PokemonCard(
-                  id: pokemon!.id,
-                  name: pokemon.name,
+                  id: pokemonSpecie.id,
+                  name: pokemonSpecie.name,
                   typeName: pokemon.types!.first.type!.name,
                   typeColor: Colors.amber,
+                  frontDefaultSprite: pokemon.sprites.frontDefault,
+                  pokemonColor: pokemonSpecie.color.name,
                 );
               },
               separatorBuilder: (context, index) {
