@@ -16,12 +16,12 @@ class DictScreen extends StatelessWidget {
       body: FutureBuilder(
         future: pokemon,
         builder: (context, AsyncSnapshot snapshot) {
-          print(snapshot);
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
               return const Text("Error Occured");
             }
             return ListView.separated(
+              padding: const EdgeInsets.all(10),
               scrollDirection: Axis.vertical,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
@@ -35,7 +35,7 @@ class DictScreen extends StatelessWidget {
               },
               separatorBuilder: (context, index) {
                 return const SizedBox(
-                  width: 0,
+                  height: 10,
                 );
               },
             );
