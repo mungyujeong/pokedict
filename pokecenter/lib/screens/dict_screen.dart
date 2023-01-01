@@ -7,8 +7,9 @@ import 'package:pokecenter/widgets/pokemon_card.dart';
 
 class DictScreen extends StatelessWidget {
   final Future<List<PokemonSpecie?>> pokemonSpecie =
-      PokeAPI.getObjectList<PokemonSpecie>(1, 100);
-  final Future<List<Pokemon?>> pokemon = PokeAPI.getObjectList<Pokemon>(1, 100);
+      PokeAPI.getObjectList<PokemonSpecie>(800, 905);
+  final Future<List<Pokemon?>> pokemon =
+      PokeAPI.getObjectList<Pokemon>(800, 905);
 
   DictScreen({super.key});
 
@@ -33,7 +34,7 @@ class DictScreen extends StatelessWidget {
                 return PokemonCard(
                   id: pokemonSpecie.id,
                   name: pokemonSpecie.name,
-                  typeName: pokemon.types!.first.type!.name,
+                  typeName: pokemon.types,
                   typeColor: Colors.amber,
                   frontDefaultSprite: pokemon.sprites.frontDefault,
                   pokemonColor: pokemonSpecie.color.name,

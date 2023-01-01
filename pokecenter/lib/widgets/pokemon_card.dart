@@ -4,7 +4,7 @@ import 'package:palette_generator/palette_generator.dart';
 class PokemonCard extends StatelessWidget {
   final int? id;
   final String? name;
-  final String? typeName;
+  final List<dynamic> typeName;
   final Color? typeColor;
   final String? frontDefaultSprite;
   final String? pokemonColor;
@@ -74,21 +74,29 @@ class PokemonCard extends StatelessWidget {
                                 child: Row(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
-                                  children: [
-                                    TypeContainer(
-                                      typeName: typeName!.toUpperCase(),
-                                      typeColor: typeColor,
-                                      typeIcon: Icons.electric_bolt,
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    const TypeContainer(
-                                      typeName: 'GHOST',
-                                      typeColor: Colors.deepPurple,
-                                      typeIcon: Icons.cut_outlined,
-                                    ),
-                                  ],
+                                  children: (typeName.length == 2)
+                                      ? [
+                                          TypeContainer(
+                                            typeName: typeName.first.type.name,
+                                            typeColor: typeColor,
+                                            typeIcon: Icons.electric_bolt,
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          TypeContainer(
+                                            typeName: typeName[1].type.name,
+                                            typeColor: Colors.deepPurple,
+                                            typeIcon: Icons.cut_outlined,
+                                          ),
+                                        ]
+                                      : [
+                                          TypeContainer(
+                                            typeName: typeName.first.type.name,
+                                            typeColor: typeColor,
+                                            typeIcon: Icons.electric_bolt,
+                                          ),
+                                        ],
                                 ),
                               ),
                             ),
