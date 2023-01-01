@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class PokemonCard extends StatelessWidget {
   final int? id;
   final String? name;
-  final List<dynamic> typeName;
-  final Color? typeColor;
+  final List<dynamic> type;
   final String? frontDefaultSprite;
   final String? pokemonColor;
 
@@ -13,17 +13,17 @@ class PokemonCard extends StatelessWidget {
     Key? key,
     required this.id,
     required this.name,
-    required this.typeName,
-    required this.typeColor,
+    required this.type,
     required this.frontDefaultSprite,
     required this.pokemonColor,
   }) : super(key: key);
 
-  Future<Color> updatePaletteGenerator(String? frontDefaultSprite) async {
+  Future<PaletteGenerator?> updatePaletteGenerator(
+      String? frontDefaultSprite) async {
     var paletteGenerator = await PaletteGenerator.fromImageProvider(
       Image.network(frontDefaultSprite!).image,
     );
-    return paletteGenerator.dominantColor!.color;
+    return paletteGenerator;
   }
 
   @override
@@ -33,11 +33,11 @@ class PokemonCard extends StatelessWidget {
       child: IntrinsicHeight(
         child: FutureBuilder(
           future: updatePaletteGenerator(frontDefaultSprite),
-          builder: (context, AsyncSnapshot<Color> snapshot) {
+          builder: (context, AsyncSnapshot<PaletteGenerator?> snapshot) {
             if (snapshot.hasData) {
               return Container(
                 decoration: BoxDecoration(
-                  color: snapshot.data!.withOpacity(.8),
+                  color: snapshot.data!.dominantColor?.color.withOpacity(.8),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -74,27 +74,27 @@ class PokemonCard extends StatelessWidget {
                                 child: Row(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
-                                  children: (typeName.length == 2)
+                                  children: (type.length == 2)
                                       ? [
                                           TypeContainer(
-                                            typeName: typeName.first.type.name,
-                                            typeColor: typeColor,
-                                            typeIcon: Icons.electric_bolt,
+                                            type: type.first.type.name,
+                                            typeColor: getTypeColor(
+                                                type.first.type.name),
                                           ),
                                           const SizedBox(
                                             width: 10,
                                           ),
                                           TypeContainer(
-                                            typeName: typeName[1].type.name,
-                                            typeColor: Colors.deepPurple,
-                                            typeIcon: Icons.cut_outlined,
+                                            type: type[1].type.name,
+                                            typeColor:
+                                                getTypeColor(type[1].type.name),
                                           ),
                                         ]
                                       : [
                                           TypeContainer(
-                                            typeName: typeName.first.type.name,
-                                            typeColor: typeColor,
-                                            typeIcon: Icons.electric_bolt,
+                                            type: type.first.type.name,
+                                            typeColor: getTypeColor(
+                                                type.first.type.name),
                                           ),
                                         ],
                                 ),
@@ -231,13 +231,12 @@ class PokeInfo extends StatelessWidget {
 }
 
 class TypeContainer extends StatelessWidget {
-  final String? typeName;
-  final IconData? typeIcon;
+  final String? type;
   final Color? typeColor;
+
   const TypeContainer({
     Key? key,
-    required this.typeName,
-    required this.typeIcon,
+    required this.type,
     required this.typeColor,
   }) : super(key: key);
 
@@ -251,24 +250,25 @@ class TypeContainer extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: typeColor!,
+            color: Colors.black.withOpacity(0.8),
           ),
-          color: typeColor!.withOpacity(0.5),
+          color: typeColor!.withOpacity(1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              typeIcon,
-              color: typeColor,
+            SvgPicture.asset(
+              "assets/type_icons/$type.svg",
+              width: 25,
+              color: Colors.white.withOpacity(.5),
             ),
             const SizedBox(
               width: 8,
             ),
             Flexible(
               child: Text(
-                typeName!,
+                type!.toUpperCase(),
               ),
             ),
           ],
@@ -276,4 +276,46 @@ class TypeContainer extends StatelessWidget {
       ),
     );
   }
+}
+
+Color? getTypeColor(String? type) {
+  switch (type) {
+    case 'bug':
+      return const Color(0x0092bc2c);
+    case 'dark':
+      return const Color(0x00595761);
+    case 'dragon':
+      return const Color(0x000c69c8);
+    case 'electric':
+      return const Color(0x00f2d94e);
+    case 'fire':
+      return const Color(0x00fba54c);
+    case 'fairy':
+      return const Color(0x00ee90e6);
+    case 'fighting':
+      return const Color(0x00d3425f);
+    case 'flying':
+      return const Color(0x00a1bbec);
+    case 'ghost':
+      return const Color(0x005f6dbc);
+    case 'grass':
+      return const Color(0x005fbd58);
+    case 'ground':
+      return const Color(0x00da7c4d);
+    case 'ice':
+      return const Color(0x0075d0c1);
+    case 'normal':
+      return const Color(0x00a0a29f);
+    case 'poison':
+      return const Color(0x00b763cf);
+    case 'psychic':
+      return const Color(0x00fa8581);
+    case 'rock':
+      return const Color(0x00c9bb8a);
+    case 'steel':
+      return const Color(0x005695a3);
+    case 'water':
+      return const Color(0x00539ddf);
+  }
+  return null;
 }
