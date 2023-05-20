@@ -71,7 +71,6 @@ class _DictScreenState extends State<DictScreen> {
                 final pokemonSpecie = pokemonSpeices?[index];
                 final types = DataUtils.getTypeModel(types: pokemon.types);
                 final name = pokemonSpecie.names[2].name;
-                print(name);
 
                 return PokemonCard(
                   id: pokemonSpecie.id,

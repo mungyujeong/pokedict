@@ -72,7 +72,7 @@ class PokemonCard extends StatelessWidget {
                                         i++) ...[
                                       if (i > 0) const SizedBox(width: 10),
                                       TypeContainer(
-                                        type: typeModel[i].typeName,
+                                        type: typeModel[i].koName,
                                         typeColor: typeModel[i].typeColor,
                                         iconPath: typeModel[i].iconPath,
                                       ),
