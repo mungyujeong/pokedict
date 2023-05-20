@@ -7,7 +7,7 @@ import 'package:pokecenter/model/type_model.dart';
 
 class PokemonCard extends StatelessWidget {
   final int? id;
-  final String? name;
+  final String name;
   final String? frontDefaultSprite;
   final List<TypeModel> typeModel;
 

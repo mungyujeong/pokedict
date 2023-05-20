@@ -22,9 +22,9 @@ class _DictScreenState extends State<DictScreen> {
 
   Future<Map<String, List<dynamic>?>> fetchPokemonData() async {
     final Future<List<PokemonSpecie?>> pokemonSpecie =
-        PokeAPI.getObjectList<PokemonSpecie>(20, 40);
+        PokeAPI.getObjectList<PokemonSpecie>(1, 100);
     final Future<List<Pokemon?>> pokemon =
-        PokeAPI.getObjectList<Pokemon>(20, 40);
+        PokeAPI.getObjectList<Pokemon>(1, 100);
 
     // Wait for both API calls to complete
     final results = await Future.wait([pokemonSpecie, pokemon]);
@@ -34,7 +34,7 @@ class _DictScreenState extends State<DictScreen> {
       'pokemonSpecie': results[0],
       'pokemon': results[1],
     };
-    print(pokemonData);
+    // print(pokemonData);
     return pokemonData;
   }
 
@@ -70,10 +70,12 @@ class _DictScreenState extends State<DictScreen> {
                 final pokemon = pokemons[index];
                 final pokemonSpecie = pokemonSpeices?[index];
                 final types = DataUtils.getTypeModel(types: pokemon.types);
+                final name = pokemonSpecie.names[2].name;
+                print(name);
 
                 return PokemonCard(
                   id: pokemonSpecie.id,
-                  name: pokemonSpecie.name,
+                  name: name,
                   frontDefaultSprite: pokemon.sprites.frontDefault,
                   typeModel: types,
                 );
