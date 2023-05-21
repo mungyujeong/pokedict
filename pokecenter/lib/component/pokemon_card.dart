@@ -21,9 +21,9 @@ class PokemonCard extends StatelessWidget {
 
   Future<PaletteGenerator?> updatePaletteGenerator(
       String? frontDefaultSprite) async {
-    var paletteGenerator = await PaletteGenerator.fromImageProvider(
-      Image.network(frontDefaultSprite!).image,
-    );
+    final spriteImage = Image.network(frontDefaultSprite!);
+    var paletteGenerator =
+        await PaletteGenerator.fromImageProvider(spriteImage.image);
     return paletteGenerator;
   }
 
@@ -35,85 +35,90 @@ class PokemonCard extends StatelessWidget {
         child: FutureBuilder(
           future: updatePaletteGenerator(frontDefaultSprite),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: snapshot.data!.dominantColor?.color.withOpacity(.8),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                PokeInfo(id: id, name: name),
-                                const SizedBox(width: 15),
-                                const PokeButton(),
-                              ],
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text('updatePaletteGenerator 에러 발생'),
+              );
+            }
+
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            return Container(
+              decoration: BoxDecoration(
+                color: snapshot.data!.dominantColor!.color.withOpacity(.6),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              PokeInfo(id: id, name: name),
+                              const SizedBox(width: 15),
+                              PokeButton(name: name),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          Container(
+                            padding: const EdgeInsets.only(
+                              left: 10,
+                              right: 10,
+                              bottom: 10,
                             ),
-                            const SizedBox(height: 15),
-                            Container(
-                              padding: const EdgeInsets.only(
-                                left: 10,
-                                right: 10,
-                                bottom: 10,
-                              ),
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    for (int i = 0;
-                                        i < typeModel.length;
-                                        i++) ...[
-                                      if (i > 0) const SizedBox(width: 10),
-                                      TypeContainer(
-                                        type: typeModel[i].koName,
-                                        typeColor: typeModel[i].typeColor,
-                                        iconPath: typeModel[i].iconPath,
-                                      ),
-                                    ],
+                            child: IntrinsicHeight(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  for (int i = 0;
+                                      i < typeModel.length;
+                                      i++) ...[
+                                    if (i > 0) const SizedBox(width: 10),
+                                    TypeContainer(
+                                      type: typeModel[i].koName,
+                                      typeColor: typeModel[i].typeColor,
+                                      iconPath: typeModel[i].iconPath,
+                                    ),
                                   ],
-                                ),
+                                ],
                               ),
                             ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Stack(
+                    children: [
+                      Container(
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.4),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(100),
+                            bottomLeft: Radius.circular(100),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Transform.translate(
+                              offset: const Offset(10, 0),
+                              child: Image.network(frontDefaultSprite!),
+                            ),
+                            const SizedBox(width: 10),
                           ],
                         ),
                       ),
-                    ),
-                    Stack(
-                      children: [
-                        Container(
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.4),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(100),
-                              bottomLeft: Radius.circular(100),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Transform.translate(
-                                offset: const Offset(10, 0),
-                                child: Image.network(frontDefaultSprite!),
-                              ),
-                              const SizedBox(width: 10),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            } else {
-              return const Text("");
-            }
+                    ],
+                  ),
+                ],
+              ),
+            );
           },
         ),
       ),

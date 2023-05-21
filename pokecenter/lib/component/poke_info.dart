@@ -31,7 +31,7 @@ class PokeInfo extends StatelessWidget {
                 name!,
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                   color: Colors.black.withOpacity(0.8),
                 ),
                 overflow: TextOverflow.visible,

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pokeapi/model/pokemon/pokemon-specie.dart';
 import 'package:pokeapi/model/pokemon/pokemon.dart';
 import 'package:pokeapi/pokeapi.dart';
-import 'package:pokecenter/component/main_appbar.dart';
+import 'package:pokecenter/component/main_app_bar.dart';
+import 'package:pokecenter/component/main_drawer.dart';
 import 'package:pokecenter/component/pokemon_card.dart';
 import 'package:pokecenter/utils/data_utils.dart';
 
@@ -22,9 +23,9 @@ class _DictScreenState extends State<DictScreen> {
 
   Future<Map<String, List<dynamic>?>> fetchPokemonData() async {
     final Future<List<PokemonSpecie?>> pokemonSpecie =
-        PokeAPI.getObjectList<PokemonSpecie>(1, 100);
+        PokeAPI.getObjectList<PokemonSpecie>(1, 1010);
     final Future<List<Pokemon?>> pokemon =
-        PokeAPI.getObjectList<Pokemon>(1, 100);
+        PokeAPI.getObjectList<Pokemon>(1, 1010);
 
     // Wait for both API calls to complete
     final results = await Future.wait([pokemonSpecie, pokemon]);
@@ -34,20 +35,27 @@ class _DictScreenState extends State<DictScreen> {
       'pokemonSpecie': results[0],
       'pokemon': results[1],
     };
-    // print(pokemonData);
     return pokemonData;
   }
+
+  bool isStared = false;
+  bool isCircled = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: mainAppBar(),
+      drawer: const MainDrawer(),
+      appBar: MainAppBar(
+        appBar: AppBar(),
+        isCircled: isCircled,
+        isStared: isStared,
+      ),
       body: FutureBuilder<Map<String, List<dynamic>?>>(
         future: fetchPokemonData(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const Center(
-              child: Text('에러 발생'),
+              child: Text('fetchPokemonData 에러 발생'),
             );
           }
 
@@ -65,17 +73,20 @@ class _DictScreenState extends State<DictScreen> {
               physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.all(10),
               scrollDirection: Axis.vertical,
-              itemCount: pokemons!.length,
+              itemCount: pokemonSpeices!.length,
               itemBuilder: (context, index) {
-                final pokemon = pokemons[index];
-                final pokemonSpecie = pokemonSpeices?[index];
+                final pokemon = pokemons![index];
+                final pokemonSpecie = pokemonSpeices[index];
+
+                final id = pokemonSpecie.id;
+                final sprite = pokemon.sprites.frontDefault;
+                final koName = pokemonSpecie.names[2].name;
                 final types = DataUtils.getTypeModel(types: pokemon.types);
-                final name = pokemonSpecie.names[2].name;
 
                 return PokemonCard(
-                  id: pokemonSpecie.id,
-                  name: name,
-                  frontDefaultSprite: pokemon.sprites.frontDefault,
+                  id: id,
+                  name: koName,
+                  frontDefaultSprite: sprite,
                   typeModel: types,
                 );
               },

@@ -29,7 +29,10 @@ class TypeContainer extends StatelessWidget {
             SvgPicture.asset(
               iconPath,
               width: 25,
-              color: Colors.white.withOpacity(.5),
+              colorFilter: ColorFilter.mode(
+                Colors.white.withOpacity(.6),
+                BlendMode.dstIn,
+              ),
             ),
             const SizedBox(width: 8),
             Flexible(
